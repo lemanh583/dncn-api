@@ -1,0 +1,33 @@
+POST http://localhost:3002/user/create
+Content-Type: application/json
+
+{
+    "username": "user1345345345",
+    "email": "user1@gmail.com",
+    "name": "user1",
+    "password": "1234567"
+}
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTkxOGJmMTY0MGFiM2M5ZWU2YzdkYyIsImlhdCI6MTYzNzQyMzI5NSwiZXhwIjoxNjQwMDE1Mjk1fQ.-hZ0YF56x1IfIIQj38Hovr1obfrzchZ8qi8l-ZyqOeY
+
+###
+POST http://localhost:3002/user/login
+Content-Type: application/json
+
+{
+    "account": "sdv",
+    "password": "1234567"
+}
+
+###
+GET http://localhost:3002/user/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOWExMzViMTc3MjZlMjQ0YzI0MDQ2OCIsImlhdCI6MTYzNzQ4NzQ3NCwiZXhwIjoxNjQwMDc5NDc0fQ.zK3AhzboTaqCsV2nE2H3N-0NxRhH01-WP5ksR5SbPOo
+
+###
+
+POST http://localhost:3002/user/update/61991809deaacfab2f7df47b
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOWExMzViMTc3MjZlMjQ0YzI0MDQ2OCIsImlhdCI6MTYzNzQ4NzQ3NCwiZXhwIjoxNjQwMDc5NDc0fQ.zK3AhzboTaqCsV2nE2H3N-0NxRhH01-WP5ksR5SbPOo
+
+{
+   "username": "user2"
+}

@@ -1,4 +1,4 @@
-const userModel = require("../model/uses");
+const userModel = require("../model/users");
 const authAdmin = async (req, res, next) => {
   try {
     const id = req.user_id;

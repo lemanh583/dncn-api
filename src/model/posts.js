@@ -2,8 +2,8 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 const postSchema = new Schema ({
-    title: {type: String, required: true},
-    slug: String,
+    title: {type: String, required: true, unique: true},
+    slug: {type: String, required: true, unique: true},
     category: {type: Schema.Types.ObjectId, ref: "categories"},
     descriptions: String,
     content: String,

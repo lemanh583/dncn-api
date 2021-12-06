@@ -1,6 +1,6 @@
 const express = require("express");
 const categoryRouter = express.Router();
-const categoryCtr = require("../controller/category");
+const categoryCtr = require("../../controller/category");
 
 categoryRouter
   .get("/get/:id", categoryCtr.get)

@@ -1,13 +1,13 @@
 const express = require("express");
 const route = express.Router();
-const userCtr = require("../controller/user");
-const auth = require("../middleware/auth");
-const authAdmin = require("../middleware/authAdmin");
-const authMod = require("../middleware/authMod");
+const userCtr = require("../../controller/user");
+const auth = require("../../middleware/auth");
+const authAdmin = require("../../middleware/authAdmin");
+const authMod = require("../../middleware/authMod");
 const {
   validatorRegister,
   validatorLogin,
-} = require("../validater/userSchema");
+} = require("../../validater/userSchema");
 
 route
   .get("/list", auth, authMod, userCtr.list)

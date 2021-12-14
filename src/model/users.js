@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const bcrypt = require("bcryptjs");
-const roles = require("./roles")
 
 const userSchema = new Schema(
   {
@@ -14,7 +12,7 @@ const userSchema = new Schema(
     date: String,
     phone: String,
     active: {type: Boolean, default: true},
-    img: String,
+    img: {type: Schema.Types.ObjectId, ref: "images"},
     created_time: {type: Number, default: Date.now()},
     updated_time: {type: Number, default: Date.now()}
   },

@@ -25,6 +25,8 @@ class Post {
       if(!find)
         return res.status(400).send({success: false, message: "Not find user"})
       data.author = uid
+      const slug = Post.removeAccents(data.title, true)
+      data.slug = slug
       const result = await postModel.create(data)
       return res.send({success: true, data: result})
     } catch (error) {
@@ -35,14 +37,17 @@ class Post {
 
   static async list(req, res) {
     try {
-      const {skip, limit, search} = req.query
+      const {skip, limit, search, sort} = req.query
       const {filter} = req.body
       let condition = {}
       Post.mapFilter(condition, search, filter)
       const result = await postModel.find(condition)
+                                    .populate({path: "category", select: "name"})
+                                    .populate({path: "author", select: "name"})
+                                    .populate("images")
                                     .sort(sort || {created_time: -1})
-                                    .skip(Number(skip))
-                                    .limit(Number(limit))
+                                    .skip(Number(skip) || 0)
+                                    .limit(Number(limit) || 20)
       const count = await postModel.countDocuments(condition)
       return res.send({success: true, data: result, count})
     } catch (error) {
@@ -65,6 +70,17 @@ class Post {
       console.error(error);
       return res.status(500).send({ success: false, message: error.message });
     }
+  }
+
+  static removeAccents(str, flag) {
+    str = str.normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+              .toLowerCase()
+              .replace(/[:"'*`,.^$]/g, "")
+              .replace(/\s/g, "-")
+    str = flag ? str + "-" + Date.now() + '.html' : str + ""
+    return str
   }
 
   static mapFilter (condition, search, filter) {

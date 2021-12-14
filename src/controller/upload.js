@@ -14,6 +14,7 @@ class Upload {
         { folder: "news" },
         async (error) => {
           if (error) throw error;
+          // console.log('file', file.tempFilePath)
           Upload.removeTmp(file.tempFilePath);
         }
       );

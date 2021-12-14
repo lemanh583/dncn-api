@@ -2,17 +2,28 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const express = require("express");
 const router = require("./router");
+const cors = require("cors")
+const fileUpload = require("express-fileupload");
+const bcrypt = require("bcryptjs")
 const roles = require("./model/roles");
 const users = require("./model/users");
 // const path = require("path");
 const app = express();
+app.use(cors());
+// app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.json());
+app.use(fileUpload({
+  useTempFiles : true,
+  tempFileDir : 'src/tmp/'
+}));
+
 app.use(router);
 
 const connectDB = async () => {
   try {
     const connect = await mongoose.connect(
       `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@db-news.mn3s0.mongodb.net/${process.env.DATABASE_NAME}?retryWrites=true&w=majority`
+      // `mongodb://127.0.0.1:27017/dncn-news`
     );
     if (connect) console.log("DB connected");
   } catch (error) {

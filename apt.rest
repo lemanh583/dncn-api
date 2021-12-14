@@ -1,11 +1,12 @@
-POST http://localhost:3002/user/create
+POST http://localhost:3002/api/user/create
 Content-Type: application/json
 
 {
-    "username": "user1345345345",
-    "email": "user1@gmail.com",
-    "name": "user1",
-    "password": "1234567"
+    "username": "aser.456",
+    "email": "user5@gmail.com",
+    "name": "lê văn mạnh",
+    "password": "1234567",
+    "rePassword": "1234567"
 }
 //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTkxOGJmMTY0MGFiM2M5ZWU2YzdkYyIsImlhdCI6MTYzNzQyMzI5NSwiZXhwIjoxNjQwMDE1Mjk1fQ.-hZ0YF56x1IfIIQj38Hovr1obfrzchZ8qi8l-ZyqOeY
 
@@ -31,3 +32,35 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOWExMzViM
 {
    "username": "user2"
 }
+
+###
+GET http://localhost:3002/api/category/list
+
+###
+POST http://localhost:3002/api/category/create 
+Content-Type: application/json
+
+{
+    "name": "Công nghệ"
+}
+
+###
+POST http://localhost:3002/api/post/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYWUxNDFkYzhmMTAxYzQ0ZWIwOTk0YiIsImlhdCI6MTYzODc5ODM2NSwiZXhwIjoxNjQxMzkwMzY1fQ.FD3W7RXA6J_Ah-n1Xf28fv-kZOZgDDzV7jalE_o7yIs
+
+{
+    "title": "Đây là bài viết số 2 này",
+    "category": "61ae1a80234d0294332d4127",
+    "content": "Nội dung cho bài 2 này"
+    
+}
+
+###
+GET http://localhost:3002/api/post/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYWUxNDFkYzhmMTAxYzQ0ZWIwOTk0YiIsImlhdCI6MTYzODc5ODM2NSwiZXhwIjoxNjQxMzkwMzY1fQ.FD3W7RXA6J_Ah-n1Xf28fv-kZOZgDDzV7jalE_o7yIs
+
+###
+GET http://localhost:3002/api/post/get/day-la-bai-viet-so-2-nay-1638801549309
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYWUxNDFkYzhmMTAxYzQ0ZWIwOTk0YiIsImlhdCI6MTYzODc5ODM2NSwiZXhwIjoxNjQxMzkwMzY1fQ.FD3W7RXA6J_Ah-n1Xf28fv-kZOZgDDzV7jalE_o7yIs
+

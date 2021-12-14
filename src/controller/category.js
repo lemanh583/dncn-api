@@ -1,4 +1,5 @@
 const categoriesModel = require("../model/categories");
+const postCtr = require("../controller/post")
 class Categories {
   static async get(req, res) {
     try {
@@ -28,17 +29,13 @@ class Categories {
   static async create(req, res) {
     try {
       const data = req.body;
-      const find = await categoriesModel.findOne({ name: data.name });
-      console.log(find);
+      data.slug = postCtr.removeAccents(data.name, false)
+      const find = await categoriesModel.findOne({$or: [{ name: data.name }, { slug: data.slug }]});
       if (find)
-        return res
-          .status(500)
-          .send({ success: false, message: "Category already exists" });
+        return res.status(500).send({ success: false, message: "Category already exists" });
       const newCate = await categoriesModel.create(data);
       if (!newCate)
-        return res
-          .status(500)
-          .send({ success: false, message: "Create failed" });
+        return res.status(500).send({ success: false, message: "Create failed" });
       res.send({ success: true, data: newCate });
     } catch (error) {
       console.error(error);

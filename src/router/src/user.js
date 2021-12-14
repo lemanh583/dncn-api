@@ -12,6 +12,7 @@ const {
 route
   .get("/list", auth, authMod, userCtr.list)
   .get("/get/:id", auth, userCtr.get)
+  .get("/get-token", auth, userCtr.getToken)
   .post("/create", validatorRegister, userCtr.create)
   .post("/login", validatorLogin, userCtr.login)
   .post("/update/:id", auth, userCtr.update)

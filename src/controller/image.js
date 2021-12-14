@@ -5,7 +5,9 @@ class Image {
 
   static async create(req, res) {
     try {
-      const file = req.files.image
+      
+      const file = req.files.upload
+      // console.log('file', req.files)
       let result = null
       if(Array.isArray(file)) {
         result = await Promise.all(
@@ -20,7 +22,8 @@ class Image {
         let resultImg = await UploadCtr.upload(file)
         result = await imageModel.create(resultImg)
       }
-      res.send({success: true, data: result})
+      // res.send({success: true, data: result})
+      res.json({uploaded: true, url: result.src, data: result})
       // console.log('result', result)
       return result
     } catch (error) {

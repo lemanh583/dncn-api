@@ -8,6 +8,9 @@ const validatorRegister = [
     .bail()
     .notEmpty()
     .withMessage("Username not empty!")
+    .trim()
+    .matches(/^[A-Za-z0-9_.]*$/g)
+    .withMessage("Username not format!")
     .bail()
     .isLength({ min: 5, max: 100 })
     .withMessage("Length min 5 char and max 100 char!")
@@ -18,7 +21,21 @@ const validatorRegister = [
           return Promise.reject("Username already in use");
         }
       });
-    }).bail(),
+    })
+    .bail(),
+  check("name")
+    .exists()
+    .withMessage("name must be exists!")
+    .bail()
+    .notEmpty()
+    .withMessage("name not empty!")
+    .bail()
+    .matches(/^[a-zA-ZaAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ ]*$/g)
+    .withMessage("name not format!")
+    .bail()
+    .isLength({ min: 5, max: 100 })
+    .withMessage("Length min 5 char and max 100 char!")
+    .bail(),
   check("email")
     .exists()
     .withMessage("Email must be exists!")
@@ -35,7 +52,8 @@ const validatorRegister = [
           return Promise.reject("E-mail already in use");
         }
       });
-    }).bail(),
+    })
+    .bail(),
   check("password")
     .exists()
     .withMessage("Password must be exists!")
@@ -46,7 +64,7 @@ const validatorRegister = [
     .isLength({ min: 5, max: 100 })
     .withMessage("Password min 5 char and max 100 char!")
     .bail(),
-  check("re-password")
+  check("rePassword")
     .exists()
     .withMessage("Password must be exists!")
     .bail()
@@ -60,9 +78,8 @@ const validatorRegister = [
       if (value !== req.body.password) {
         throw new Error("Password confirmation is incorrect");
       }
-      return value
-    })
-  
+      return value;
+    }),
 ];
 
 const validatorLogin = [
@@ -85,7 +102,7 @@ const validatorLogin = [
     .bail()
     .isLength({ min: 5, max: 100 })
     .withMessage("Password min 5 char and max 100 char!")
-    .bail()
+    .bail(),
 ];
 
 module.exports = { validatorRegister, validatorLogin };

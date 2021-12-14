@@ -31,6 +31,7 @@ class User {
 
   static async login(req, res) {
     try {
+      // console.log('req', req)
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -103,10 +104,25 @@ class User {
 
   static async get(req, res) {
     try {
-      const _id = req.user_id;
+      const _id = req.params.id;
       if (!_id)
         return res.status(500).send({ success: false, message: "no id" });
       const user = await userModel.findById(_id);
+      if (!user)
+        return res.status(500).send({ success: false, message: "not user" });
+      return res.send({ success: true, data: user });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send({ success: false, message: error.message });
+    }
+  }
+
+  static async getToken(req, res) {
+    try {
+      const _id = req.user_id;
+      if (!_id)
+        return res.status(500).send({ success: false, message: "no id" });
+      const user = await userModel.findById(_id).select('-password');
       if (!user)
         return res.status(500).send({ success: false, message: "not user" });
       return res.send({ success: true, data: user });

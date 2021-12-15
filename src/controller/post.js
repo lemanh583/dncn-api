@@ -5,9 +5,8 @@ class Post {
     try {
       const slug = req.params.slug
       const post = await postModel.findOne({slug: slug})
-                                  .populate({path: 'category', select: 'name'})
-                                  .populate({path: 'author', select: 'name username email'})
-                                  .populate('images')
+                                  .populate({path: 'category', select: 'name slug'})
+                                  .populate({path: 'author', select: 'name username email'})                           
       if(!post)
         return res.status(400).send({success: false, message: "Not find post!"})
       return res.send({success: true, data: post})
@@ -44,7 +43,6 @@ class Post {
       const result = await postModel.find(condition)
                                     .populate({path: "category", select: "name"})
                                     .populate({path: "author", select: "name"})
-                                    .populate("images")
                                     .sort(sort || {created_time: -1})
                                     .skip(Number(skip) || 0)
                                     .limit(Number(limit) || 20)

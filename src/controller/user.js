@@ -2,6 +2,8 @@ const userModel = require("../model/users");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const {validationResult} = require('express-validator')
+const postModel = require("../model/posts")
+const roleModel = require("../model/roles")
 
 class User {
   static async create(req, res) {
@@ -68,38 +70,62 @@ class User {
 
   static async list(req, res) {
     try {
-      console.log(req.role)
+      // console.log(req.role)
       const skip = req.query.skip || 0;
       const limit = req.query.limit || 15;
-      const {filter} = req.body
+      const {filter, search} = req.body
       const role = req.role
       let condition = {}
-      if(role == 1) {
-        condition.username = { $ne: "admin" }
-        condition.email = { $ne: "admin@admin.com" }
-      }
-      if(filter){
-        if(filter == "mod"){
-          condition.role = 1
-        }
-        if(filter == "mem"){
-          condition.role = 3
-        }
-        if(filter == "col"){
-          condition.role = 2
-        }
-      }
+      User.mapFilter(condition, filter, search, role)
       console.log("______condition_______", condition)
-      const list = await userModel
+      let list = await userModel
                             .find(condition)
+                            .select('-password')
                             .sort({createdAt: -1})
                             .skip(Number(skip))
                             .limit(Number(limit));
-      return res.send({ success: true, data: list });
+      list = await Promise.all(
+        list.map(async (value) => {
+          let newData = Object.assign({}, value._doc)
+          let countPost = await postModel.countDocuments({author: value._id})
+          let permision = await roleModel.findOne({role: value.role})
+          newData.countPost = countPost
+          newData.permision = permision.name
+          return newData
+        })
+      )
+      const countUser = await userModel.countDocuments(condition)
+      return res.send({ success: true, data: list, count: countUser });
     } catch (error) {
       console.error(error);
       return res.status(500).send({ success: false, message: error.message });
     }
+  }
+
+  static mapFilter (condition, filter, search, role) {
+    if(search) {
+      const searchRegex = new RegExp(`.*${search}.*`, 'i')
+      condition['$or'] = [
+        {username: searchRegex},
+        {name: searchRegex},
+        {email: searchRegex},
+      ]  
+    }
+    if(role == 1) {
+      condition.username = { $ne: "admin" }
+      condition.email = { $ne: "admin@admin.com" }
+    }
+    if(!filter) return condition
+    if(filter == "mod"){
+      condition.role = 1
+    }
+    if(filter == "mem"){
+      condition.role = 3
+    }
+    if(filter == "col"){
+      condition.role = 2
+    }
+    return condition
   }
 
   static async get(req, res) {

@@ -8,7 +8,7 @@ const postSchema = new Schema ({
     descriptions: String,
     content: String,
     author: {type: Schema.Types.ObjectId, ref: "users"},
-    image: {type: Schema.Types.ObjectId, ref: "users"},
+    image: {type: Schema.Types.ObjectId, ref: "images"},
     view: {type: Number, default: 0},
     approved: {type: String, default: 0},
     created_time: {type: Number, default: Date.now()},

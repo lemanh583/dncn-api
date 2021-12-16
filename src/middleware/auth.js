@@ -9,6 +9,7 @@ const auth = (req, res, next) => {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, decoded) => {
             if(error)
                 return res.status(401).send({success: false, message: "Authentication failed"})
+            // console.log('req.uid', decoded.id)
             req.user_id = decoded.id
             next()
         })      

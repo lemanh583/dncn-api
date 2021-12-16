@@ -7,7 +7,7 @@ class Image {
     try {
       
       const file = req.files.upload
-      // console.log('file', req.files)
+      // console.log('file', file)
       let result = null
       if(Array.isArray(file)) {
         result = await Promise.all(

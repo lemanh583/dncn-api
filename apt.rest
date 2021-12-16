@@ -15,13 +15,19 @@ POST http://localhost:3002/api/user/login
 Content-Type: application/json
 
 {
-    "account": "admin",
+    "account": "user3",
     "password": "1234567"
 }
 
 ###
-GET http://localhost:3002/api/user/list
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYTY1ODk0NWFmZWYzZWU1YzU3MGM2YyIsImlhdCI6MTYzODc2MTEzMiwiZXhwIjoxNjQxMzUzMTMyfQ.yZ2n38eXkEti1uwhZcSFc67T7uv0Q0Y2XfSCTvdAwcI
+POST http://localhost:3002/api/user/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOWVlNjJlZTYwZGM0ZGE0MjA0NDQwNSIsImlhdCI6MTYzOTYyNTA5MCwiZXhwIjoxNjQyMjE3MDkwfQ.NFoWCjovGhM4JwvW9wvc6gUIrQhTvvwHQuplruNG2s4
+Content-Type: application/json
+
+{
+    "filter": "",
+    "search": ""
+}
 
 ###
 
@@ -41,7 +47,7 @@ POST http://localhost:3002/api/category/create
 Content-Type: application/json
 
 {
-    "name": "Công nghệ"
+    "name": "Giải trí"
 }
 
 ###

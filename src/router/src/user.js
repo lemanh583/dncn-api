@@ -10,7 +10,7 @@ const {
 } = require("../../validater/userSchema");
 
 route
-  .get("/list", auth, authMod, userCtr.list)
+  .post("/list", auth, authMod, userCtr.list)
   .get("/get/:id", auth, userCtr.get)
   .get("/get-token", auth, userCtr.getToken)
   .post("/create", validatorRegister, userCtr.create)

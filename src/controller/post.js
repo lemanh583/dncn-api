@@ -1,5 +1,9 @@
 const postModel = require("../model/posts")
 const userModel = require("../model/users")
+const uploadCtr = require("./upload")
+const imgModel = require("../model/images")
+const {validationResult} = require('express-validator')
+
 class Post {
   static async get(req, res) {
     try {
@@ -18,14 +22,26 @@ class Post {
 
   static async create(req, res) {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
       const data = req.body
       const uid = req.user_id
+      // console.log('reqs', req.files)
+      const file = req.files
       const find = await userModel.findById(uid)
       if(!find)
         return res.status(400).send({success: false, message: "Not find user"})
       data.author = uid
       const slug = Post.removeAccents(data.title, true)
       data.slug = slug
+      if(file) {
+        // console.log('file', file)
+        const upload = await uploadCtr.upload(file.file);
+        const img = await imgModel.create(upload)
+        data.image = img._id
+      }
       const result = await postModel.create(data)
       return res.send({success: true, data: result})
     } catch (error) {
@@ -43,6 +59,7 @@ class Post {
       const result = await postModel.find(condition)
                                     .populate({path: "category", select: "name"})
                                     .populate({path: "author", select: "name"})
+                                    .pupulate({path: "image", select: "src"})
                                     .sort(sort || {created_time: -1})
                                     .skip(Number(skip) || 0)
                                     .limit(Number(limit) || 20)

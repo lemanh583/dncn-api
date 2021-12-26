@@ -81,8 +81,15 @@ class Post {
       }
       const data = req.body
       const id = req.params.id
+      const file = req.files
       if(!id) 
         return res.status(500).send({success: false, message: "Not id"})
+      if(file) {
+        // console.log('file', file)
+        const upload = await uploadCtr.upload(file.file);
+        const img = await imgModel.create(upload)
+        data.image = img._id
+      }
       const post = await postModel.findByIdAndUpdate(id, data, {new: true})
       if(!post) 
         return res.status(500).send({success: false, message: "Not find post"})

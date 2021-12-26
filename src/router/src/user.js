@@ -7,6 +7,7 @@ const authMod = require("../../middleware/authMod");
 const {
   validatorRegister,
   validatorLogin,
+  checkUpdate
 } = require("../../validater/userSchema");
 
 route
@@ -15,8 +16,9 @@ route
   .get("/get-token", auth, userCtr.getToken)
   .post("/create", validatorRegister, userCtr.create)
   .post("/login", validatorLogin, userCtr.login)
-  .post("/update/:id", auth, userCtr.update)
+  .post("/update/:id", auth,checkUpdate ,userCtr.update)
   .delete("/delete-user/:id", auth, authAdmin, userCtr.deleteUser)
   .post("/ban-user/:id", auth, authMod, userCtr.banUser)
+  .post("/change-pass/:id", auth, userCtr.changePass)
 
 module.exports = route;

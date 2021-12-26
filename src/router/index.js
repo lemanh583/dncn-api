@@ -7,5 +7,6 @@ app.use("/api/category", require("./src/category"))
 // app.use("/api/cloud",auth, require("./src/upload"))
 app.use("/api/image", require("./src/image"))
 app.use("/api/post", require("./src/post"))
+app.use("/api/comment", require("./src/comment"))
 
 module.exports = app

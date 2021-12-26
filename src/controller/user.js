@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const {validationResult} = require('express-validator')
 const postModel = require("../model/posts")
 const roleModel = require("../model/roles")
+const uploadCtr = require("./upload")
+const imgModel = require("../model/images")
 
 class User {
   static async create(req, res) {
@@ -133,7 +135,7 @@ class User {
       const _id = req.params.id;
       if (!_id)
         return res.status(500).send({ success: false, message: "no id" });
-      const user = await userModel.findById(_id);
+      const user = await userModel.findById(_id).populate({path: "img", select: "src"});
       if (!user)
         return res.status(500).send({ success: false, message: "not user" });
       return res.send({ success: true, data: user});
@@ -160,10 +162,22 @@ class User {
 
   static async update (req, res) {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
       const data = req.body
       const _id = req.params.id
+      const file = req.files
       if (!_id)
         return res.status(500).send({ success: false, message: "no id" })
+      if(file) {
+        // console.log('file', file)
+        const upload = await uploadCtr.upload(file.file);
+        const img = await imgModel.create(upload)
+        data.img = img._id
+      }
+      
       const update = await userModel.findByIdAndUpdate(_id, data, {new: true})
       res.send({success: true, data: update})
     } catch (error) {
@@ -221,6 +235,28 @@ class User {
       return res.status(500).send({ success: false, message: error.message });
     }
   } 
+
+  static async changePass (req, res) {
+    try {
+      const id = req.params.id
+      const data = req.body
+      if (!id)
+        return res.status(500).send({ success: false, message: "no id" })
+      // console.log('data', data)
+      if(data.password && data.password.length >= 5) {
+        const salt = bcrypt.genSaltSync(10);
+        const hashPass = bcrypt.hashSync(data.password, salt);
+        data.password = hashPass;
+      }else {
+        return res.status(400).send({success: false, message: "Password not format"})
+      }
+      const result = await userModel.findByIdAndUpdate(id, data)
+      return res.send({success: true, message:"success"})
+    } catch (error) {
+      console.error(error)
+      return res.status(500).send({ success: false, message: error.message });
+    }
+  }
 
 }
 

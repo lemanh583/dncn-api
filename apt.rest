@@ -70,6 +70,11 @@ post http://localhost:3002/api/post/list
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYWUxNDFkYzhmMTAxYzQ0ZWIwOTk0YiIsImlhdCI6MTYzODc5ODM2NSwiZXhwIjoxNjQxMzkwMzY1fQ.FD3W7RXA6J_Ah-n1Xf28fv-kZOZgDDzV7jalE_o7yIs
 
 ###
+post http://localhost:3002/api/user/update/61b0d2d7c205973ad1a77036
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYWUxNDFkYzhmMTAxYzQ0ZWIwOTk0YiIsImlhdCI6MTYzODc5ODM2NSwiZXhwIjoxNjQxMzkwMzY1fQ.FD3W7RXA6J_Ah-n1Xf28fv-kZOZgDDzV7jalE_o7yIs
+
+###
 GET http://localhost:3002/api/post/get/ha-noi-lien-tuc-mo-rong-dia-ban-dung-hoat-dong-khong-thiet-yeu-1640080378815.html
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYWUxNDFkYzhmMTAxYzQ0ZWIwOTk0YiIsImlhdCI6MTYzODc5ODM2NSwiZXhwIjoxNjQxMzkwMzY1fQ.FD3W7RXA6J_Ah-n1Xf28fv-kZOZgDDzV7jalE_o7yIs
 

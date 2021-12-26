@@ -43,11 +43,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOWExMzViM
 GET http://localhost:3002/api/category/list
 
 ###
+GET http://localhost:3002/api/category/get/thoi-sudvfd
+
+###
 POST http://localhost:3002/api/category/create 
 Content-Type: application/json
 
 {
-    "name": "Giải trí"
+    "name": "Công nghệ"
 }
 
 ###
@@ -63,10 +66,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYWUxNDFkY
 }
 
 ###
-GET http://localhost:3002/api/post/list
+post http://localhost:3002/api/post/list
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYWUxNDFkYzhmMTAxYzQ0ZWIwOTk0YiIsImlhdCI6MTYzODc5ODM2NSwiZXhwIjoxNjQxMzkwMzY1fQ.FD3W7RXA6J_Ah-n1Xf28fv-kZOZgDDzV7jalE_o7yIs
 
 ###
-GET http://localhost:3002/api/post/get/day-la-bai-viet-so-2-nay-1638801549309
+GET http://localhost:3002/api/post/get/ha-noi-lien-tuc-mo-rong-dia-ban-dung-hoat-dong-khong-thiet-yeu-1640080378815.html
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYWUxNDFkYzhmMTAxYzQ0ZWIwOTk0YiIsImlhdCI6MTYzODc5ODM2NSwiZXhwIjoxNjQxMzkwMzY1fQ.FD3W7RXA6J_Ah-n1Xf28fv-kZOZgDDzV7jalE_o7yIs
 

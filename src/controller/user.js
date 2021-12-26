@@ -136,7 +136,7 @@ class User {
       const user = await userModel.findById(_id);
       if (!user)
         return res.status(500).send({ success: false, message: "not user" });
-      return res.send({ success: true, data: user });
+      return res.send({ success: true, data: user});
     } catch (error) {
       console.error(error);
       return res.status(500).send({ success: false, message: error.message });
@@ -196,7 +196,7 @@ class User {
         return res.status(500).send({ success: false, message: "no flag" });
       if (!_id)
         return res.status(500).send({ success: false, message: "no id" });
-      const user = null
+      let user = {}
       if(role == 1){
         if(flag == "ban"){
           user = userModel.findOneAndUpdate({_id, role: {$in: [2,3]}}, {active: false})

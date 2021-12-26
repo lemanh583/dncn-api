@@ -10,7 +10,8 @@ class Post {
       const slug = req.params.slug
       const post = await postModel.findOne({slug: slug})
                                   .populate({path: 'category', select: 'name slug'})
-                                  .populate({path: 'author', select: 'name username email'})                           
+                                  .populate({path: 'author', select: 'name username email'}) 
+                                  .populate({path: "image", select: "src"})                          
       if(!post)
         return res.status(400).send({success: false, message: "Not find post!"})
       return res.send({success: true, data: post})
@@ -52,15 +53,16 @@ class Post {
 
   static async list(req, res) {
     try {
-      const {skip, limit, search, sort} = req.query
-      const {filter} = req.body
+      const {skip, limit} = req.query
+      const {filter, search, sort} = req.body
+      console.log('sort', sort)
       let condition = {}
       Post.mapFilter(condition, search, filter)
       const result = await postModel.find(condition)
                                     .populate({path: "category", select: "name"})
                                     .populate({path: "author", select: "name"})
-                                    .pupulate({path: "image", select: "src"})
-                                    .sort(sort || {created_time: -1})
+                                    .populate({path: "image", select: "src"})
+                                    .sort(sort ? sort  : {created_time: -1})
                                     .skip(Number(skip) || 0)
                                     .limit(Number(limit) || 20)
       const count = await postModel.countDocuments(condition)
@@ -73,6 +75,18 @@ class Post {
 
   static async update(req, res) {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+      const data = req.body
+      const id = req.params.id
+      if(!id) 
+        return res.status(500).send({success: false, message: "Not id"})
+      const post = await postModel.findByIdAndUpdate(id, data, {new: true})
+      if(!post) 
+        return res.status(500).send({success: false, message: "Not find post"})
+      return res.send({success: true, data: post})
     } catch (error) {
       console.error(error);
       return res.status(500).send({ success: false, message: error.message });
@@ -110,8 +124,11 @@ class Post {
     if(filter.category) {
      condition.category = filter.category 
     }
-    if(filter.uid) {
-      condition.uid = filter.uid
+    if(filter.approved) {
+      condition.approved = filter.approved
+    }
+    if(filter.author) {
+      condition.author = filter.author
     }
     return condition
   }

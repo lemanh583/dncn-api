@@ -3,12 +3,10 @@ const postCtr = require("../controller/post")
 class Categories {
   static async get(req, res) {
     try {
-      const _id = req.params.id;
-      if (!_id)
-        return res
-          .status(500)
-          .send({ success: false, message: "No id category" });
-      const find = await categoriesModel.findById(_id);
+      const slug = req.params.slug;
+      if (!slug)
+        return res.status(500) .send({ success: false, message: "No id category" });
+      const find = await categoriesModel.findOne({slug: slug});
       res.send({ success: true, data: find });
     } catch (error) {
       console.error(error);
@@ -18,7 +16,8 @@ class Categories {
 
   static async list(req, res) {
     try {
-      const list = await categoriesModel.find({});
+      const list = await categoriesModel.find({})
+      // .sort({created_time: 1});
       res.send({ success: true, data: list });
     } catch (error) {
       console.error(error);

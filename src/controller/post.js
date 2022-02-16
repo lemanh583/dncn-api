@@ -62,7 +62,7 @@ class Post {
                                     .populate({path: "category", select: "name"})
                                     .populate({path: "author", select: "name"})
                                     .populate({path: "image", select: "src"})
-                                    .sort(sort ? sort  : {created_time: -1})
+                                    .sort(sort || {created_time: -1})
                                     .skip(Number(skip) || 0)
                                     .limit(Number(limit) || 20)
       const count = await postModel.countDocuments(condition)
@@ -102,6 +102,11 @@ class Post {
 
   static async delete(req, res) {
     try {
+      const id = req.params.id
+      if(!id ) return res.status(500).send({ success: false, message: "no id" });
+      let rs = await postModel.findByIdAndDelete(id)
+      if(!rs) return res.status(500).send({ success: false, message: "no post" });
+      return res.send({success: true})
     } catch (error) {
       console.error(error);
       return res.status(500).send({ success: false, message: error.message });
@@ -115,6 +120,7 @@ class Post {
               .toLowerCase()
               .replace(/[:"'*`,.^$]/g, "")
               .replace(/\s/g, "-")
+              .replace(/\//g,"-")
     str = flag ? str + "-" + Date.now() + '.html' : str + ""
     return str
   }

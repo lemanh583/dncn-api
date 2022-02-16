@@ -126,6 +126,9 @@ class User {
     }
     if(filter == "col"){
       condition.role = 2
+    } 
+    if(filter == "ban"){
+      condition.active = false
     }
     return condition
   }
@@ -150,7 +153,9 @@ class User {
       const _id = req.user_id;
       if (!_id)
         return res.status(500).send({ success: false, message: "no id" });
-      const user = await userModel.findById(_id).select('-password');
+      const user = await userModel.findById(_id)
+                            .select('-password')
+                            .populate({path: "img", select: "src"});
       if (!user)
         return res.status(500).send({ success: false, message: "not user" });
       return res.send({ success: true, data: user });
@@ -213,18 +218,19 @@ class User {
       let user = {}
       if(role == 1){
         if(flag == "ban"){
-          user = userModel.findOneAndUpdate({_id, role: {$in: [2,3]}}, {active: false})
+          user = await userModel.findOneAndUpdate({_id, role: {$in: [2,3]}}, {active: false})
         }
         else if(flag == "unban") {
-          user = userModel.findOneAndUpdate({_id, role: {$in: [2,3]}}, {active: true})
+          user = await userModel.findOneAndUpdate({_id, role: {$in: [2,3]}}, {active: true})
         }
       }
       if(role == 0){
         if(flag == "ban"){
-          user = userModel.findOneAndUpdate({_id, role: {$in: [1,2,3]}}, {active: false})
+          user = await userModel.findOneAndUpdate({_id, role: {$in: [1,2,3]}}, {active: false}, {new: true})
+          // console.log('user', user)
         }
         else if(flag == "unban") {
-          user = userModel.findOneAndUpdate({_id, role: {$in: [1,2,3]}}, {active: true})
+          user =  await userModel.findOneAndUpdate({_id, role: {$in: [1,2,3]}}, {active: true})
         }
       }
       if(!user)  return res.status(500).send({ success: false, message: "failed!" });
@@ -252,6 +258,20 @@ class User {
       }
       const result = await userModel.findByIdAndUpdate(id, data)
       return res.send({success: true, message:"success"})
+    } catch (error) {
+      console.error(error)
+      return res.status(500).send({ success: false, message: error.message });
+    }
+  }
+
+  static async changeRole (req, res) {
+    try {
+      const id = req.params.id
+      const {role} = req.body
+      if(!id)  return res.status(400).send({success: false, message: "Not id"})
+      const find = await userModel.findByIdAndUpdate(id, {role: role})
+      if(!find) return res.status(400).send({success: false, message: "Not find user"})
+      return res.send({success: true})
     } catch (error) {
       console.error(error)
       return res.status(500).send({ success: false, message: error.message });

@@ -3,6 +3,7 @@ class Comment {
   static async list(req, res) {
     try {
       const {filter } = req.body
+      const {skip, limit} = req.query
       let condition = {}
       if(filter) {
         if(filter.author) {
@@ -13,7 +14,15 @@ class Comment {
         }
       }
       const list = await commentModel.find(condition)
-      return res.send({success: true, data: list})
+                                      .populate({
+                                              path: 'author', 
+                                              select: '-password',
+                                              populate: "img"
+                                            })
+                                      .skip(Number(skip) || 0)
+                                      .limit(Number(limit) || 10)
+      const count = await commentModel.countDocuments(condition)
+      return res.send({success: true, data: list, count})
     } catch (error) {
       console.error(error);
       return res.status(500).send({ success: false, message: error.message });
@@ -49,8 +58,6 @@ class Comment {
   static async create(req, res) {
     try {
       const data = req.body
-      const userid = req.user_id
-      data.author = userid
       let result = await commentModel.create(data)
       return res.send({success: true, data: result})
     } catch (error) {

@@ -74,7 +74,23 @@ post http://localhost:3002/api/user/update/61b0d2d7c205973ad1a77036
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYWUxNDFkYzhmMTAxYzQ0ZWIwOTk0YiIsImlhdCI6MTYzODc5ODM2NSwiZXhwIjoxNjQxMzkwMzY1fQ.FD3W7RXA6J_Ah-n1Xf28fv-kZOZgDDzV7jalE_o7yIs
 
+{
+    "username": "kdfnvkjdf"
+}
+
 ###
 GET http://localhost:3002/api/post/get/ha-noi-lien-tuc-mo-rong-dia-ban-dung-hoat-dong-khong-thiet-yeu-1640080378815.html
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYWUxNDFkYzhmMTAxYzQ0ZWIwOTk0YiIsImlhdCI6MTYzODc5ODM2NSwiZXhwIjoxNjQxMzkwMzY1fQ.FD3W7RXA6J_Ah-n1Xf28fv-kZOZgDDzV7jalE_o7yIs
 
+###
+GET http://localhost:3002/api/role/list
+
+###
+POST http://localhost:3002/api/comment/create
+Content-Type: application/json
+
+{
+    "post": "61c1d3f954fe5f2033ffa622",
+    "author": "61a658945afef3ee5c570c6c",
+    "name": "ánkjadvs"
+}

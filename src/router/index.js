@@ -8,5 +8,7 @@ app.use("/api/category", require("./src/category"))
 app.use("/api/image", require("./src/image"))
 app.use("/api/post", require("./src/post"))
 app.use("/api/comment", require("./src/comment"))
+app.use("/api/role", require("./src/role"))
+app.use("/api/dashboard", require("./src/dashboard"))
 
 module.exports = app

@@ -20,5 +20,6 @@ route
   .delete("/delete-user/:id", auth, authAdmin, userCtr.deleteUser)
   .post("/ban-user/:id", auth, authMod, userCtr.banUser)
   .post("/change-pass/:id", auth, userCtr.changePass)
+  .post("/change-role/:id", auth, authAdmin, userCtr.changeRole)
 
 module.exports = route;

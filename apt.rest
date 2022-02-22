@@ -94,3 +94,6 @@ Content-Type: application/json
     "author": "61a658945afef3ee5c570c6c",
     "name": "ánkjadvs"
 }
+
+###
+GET http://localhost:3002/api/dashboard/get

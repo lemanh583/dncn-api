@@ -13,18 +13,16 @@ class Image {
         result = await Promise.all(
           file.map (async (value) => {
             let up = await UploadCtr.upload(value)
-            let create = await imageModel.create(up)
-            return create
+            // let create = await imageModel.create(up)
+            return up
           })
         )
       }
       else{
-        let resultImg = await UploadCtr.upload(file)
-        result = await imageModel.create(resultImg)
+        result = await UploadCtr.upload(file)
+        // result = await imageModel.create(resultImg)
       }
-      // res.send({success: true, data: result})
       res.json({uploaded: true, url: result.src, data: result})
-      // console.log('result', result)
       return result
     } catch (error) {
       console.error(error);
@@ -32,8 +30,14 @@ class Image {
     }
   }
   
-  static async get(req, res) {
+  static async list(req, res) {
     try {
+      const {skip, limit } = req.query
+      const count = await imageModel.countDocuments() 
+      const list = await imageModel.find({})
+                            .skip(Number(skip) || 0)
+                            .limit(Number(limit) || 20)
+      return res.send({success: true, data: list, count})
     } catch (error) {
       console.error(error);
       return res.status(500).send({ success: false, message: error.message });
@@ -49,7 +53,7 @@ class Image {
       if(!result) 
         return res.status(500).send({success: false, message: "Not find image!"})
       let delImg = await UploadCtr.destroy(result.public_id)
-      return delImg
+      return res.send({success: true, data: delImg})
     } catch (error) {
       console.error(error);
       return res.status(500).send({ success: false, message: error.message });

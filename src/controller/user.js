@@ -177,10 +177,9 @@ class User {
       if (!_id)
         return res.status(500).send({ success: false, message: "no id" })
       if(file) {
-        // console.log('file', file)
-        const upload = await uploadCtr.upload(file.file);
-        const img = await imgModel.create(upload)
-        data.img = img._id
+        console.log(file)
+        const img = await uploadCtr.upload(file.file);
+        data.img = img.img._id
       }
       
       const update = await userModel.findByIdAndUpdate(_id, data, {new: true})

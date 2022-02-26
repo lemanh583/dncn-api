@@ -38,10 +38,8 @@ class Post {
       const slug = Post.removeAccents(data.title, true)
       data.slug = slug
       if(file) {
-        // console.log('file', file)
-        const upload = await uploadCtr.upload(file.file);
-        const img = await imgModel.create(upload)
-        data.image = img._id
+        const img = await uploadCtr.upload(file.file);
+        data.image = img.img._id
       }
       const result = await postModel.create(data)
       return res.send({success: true, data: result})

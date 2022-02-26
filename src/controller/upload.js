@@ -1,4 +1,5 @@
 const cloudinary = require("cloudinary").v2;
+const imageModel = require("../model/images")
 const fs = require("fs");
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -14,11 +15,17 @@ class Upload {
         { folder: "news" },
         async (error) => {
           if (error) throw error;
-          // console.log('file', file.tempFilePath)
+          console.log('file', file.tempFilePath)
           Upload.removeTmp(file.tempFilePath);
         }
       );
-      return { public_id: result.public_id, src: result.secure_url };
+      let data = {
+        public_id: result.public_id, 
+        src: result.secure_url
+      }
+      const img = await imageModel.create(data)
+      data.img = img
+      return data;
     } catch (error) {
       console.error(error);
       return false;
@@ -39,6 +46,7 @@ class Upload {
   }
 
   static removeTmp(path) {
+    console.log(path)
     fs.unlink(path, (err) => {
       if (err) throw err;
     });

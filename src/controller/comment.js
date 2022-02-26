@@ -19,6 +19,8 @@ class Comment {
                                               select: '-password',
                                               populate: "img"
                                             })
+                                      .populate({path: 'post', select: 'title'})
+                                      .sort({created_time: -1})
                                       .skip(Number(skip) || 0)
                                       .limit(Number(limit) || 10)
       const count = await commentModel.countDocuments(condition)

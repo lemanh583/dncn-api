@@ -50,6 +50,7 @@ class Categories {
         return res
           .status(500)
           .send({ success: false, message: "No id category" });
+      data.slug = postCtr.removeAccents(data.name, false)
       const findUp = await categoriesModel.findByIdAndUpdate(_id, data, {
         new: true,
       });
@@ -72,7 +73,6 @@ class Categories {
           .status(500)
           .send({ success: false, message: "No id category" });
       const result = await categoriesModel.findByIdAndDelete({ _id });
-      console.log("delete", result);
       if (!result)
         return res
           .status(500)

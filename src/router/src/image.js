@@ -4,7 +4,7 @@ const imgCtr = require("../../controller/image")
 
 imgRoute
     .post("/create", imgCtr.create)
-    .get("/get", imgCtr.get)
+    .get("/list", imgCtr.list)
     .delete("/delete/:id", imgCtr.delete)
 
 module.exports = imgRoute

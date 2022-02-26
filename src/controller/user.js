@@ -46,7 +46,10 @@ class User {
       });
       if (!find) {
         return res.status(500).send({ success: false, message: "Incorrect email or password. Please check again!" });
-      } 
+      }
+      else if(!find.avtive) {
+        return res.status(500).send({ success: false, message: "Account has been blocked!" });
+      }
       else 
       {
         const checkPass = await bcrypt.compareSync(data.password, find.password); // true
@@ -156,6 +159,9 @@ class User {
       const user = await userModel.findById(_id)
                             .select('-password')
                             .populate({path: "img", select: "src"});
+      if(!user.active) {
+        return res.status(500).send({ success: false, message: "User has been blocked!" });
+      }
       if (!user)
         return res.status(500).send({ success: false, message: "not user" });
       return res.send({ success: true, data: user });

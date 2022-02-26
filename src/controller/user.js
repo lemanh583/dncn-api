@@ -47,7 +47,7 @@ class User {
       if (!find) {
         return res.status(500).send({ success: false, message: "Incorrect email or password. Please check again!" });
       }
-      else if(!find.avtive) {
+      if(!find.active) {
         return res.status(500).send({ success: false, message: "Account has been blocked!" });
       }
       else 

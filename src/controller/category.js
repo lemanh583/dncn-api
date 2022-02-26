@@ -17,7 +17,7 @@ class Categories {
   static async list(req, res) {
     try {
       const list = await categoriesModel.find({})
-      // .sort({created_time: 1});
+                                        .sort({created_time: 1});
       res.send({ success: true, data: list });
     } catch (error) {
       console.error(error);

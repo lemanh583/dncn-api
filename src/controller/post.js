@@ -53,9 +53,9 @@ class Post {
     try {
       const {skip, limit} = req.query
       const {filter, search, sort} = req.body
-      console.log('sort', sort)
       let condition = {}
       Post.mapFilter(condition, search, filter)
+      console.log(condition)
       const result = await postModel.find(condition)
                                     .populate({path: "category", select: "name"})
                                     .populate({path: "author", select: "name"})

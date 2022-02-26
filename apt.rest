@@ -68,6 +68,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYWUxNDFkY
 ###
 post http://localhost:3002/api/post/list
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYWUxNDFkYzhmMTAxYzQ0ZWIwOTk0YiIsImlhdCI6MTYzODc5ODM2NSwiZXhwIjoxNjQxMzkwMzY1fQ.FD3W7RXA6J_Ah-n1Xf28fv-kZOZgDDzV7jalE_o7yIs
+Content-Type: application/json
+
+{
+    "filter": { "approved": 1 },
+    "sort": {
+              "created_time": -1
+            }
+}
 
 ###
 post http://localhost:3002/api/user/update/61b0d2d7c205973ad1a77036

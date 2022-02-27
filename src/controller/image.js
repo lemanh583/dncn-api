@@ -22,6 +22,7 @@ class Image {
         result = await UploadCtr.upload(file)
         // result = await imageModel.create(resultImg)
       }
+      console.log(result)
       res.json({uploaded: true, url: result.src, data: result})
       return result
     } catch (error) {
@@ -35,6 +36,7 @@ class Image {
       const {skip, limit } = req.query
       const count = await imageModel.countDocuments() 
       const list = await imageModel.find({})
+                            .sort({created_time: -1})
                             .skip(Number(skip) || 0)
                             .limit(Number(limit) || 20)
       return res.send({success: true, data: list, count})

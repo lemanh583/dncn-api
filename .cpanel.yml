@@ -1,4 +1,4 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/bonlatk/repositories/dncn-api
+    - export DEPLOYPATH=/home/bonlatk/dncn-api

@@ -1,9 +1,9 @@
 const express = require("express")
-const cloudDinary = express.Router()
+const cloud = express.Router()
 const uploadCtr = require("../../controller/upload")
 
-cloudDinary
-    .post("/upload", uploadCtr.upload)
-    .post("/destroy", uploadCtr.destroy)
+cloud
+    .post("/google-upload", uploadCtr.googleUpload)
+    .post("/google-destroy", uploadCtr.destroy)
 
-module.exports = cloudDinary
+module.exports = cloud

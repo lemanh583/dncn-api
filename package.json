@@ -19,8 +19,10 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "express-validator": "^6.13.0",
+    "googleapis": "^100.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.12"
+    "mongoose": "^6.0.12",
+    "socket.io": "^4.5.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

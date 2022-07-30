@@ -15,7 +15,7 @@ POST http://localhost:3002/api/user/login
 Content-Type: application/json
 
 {
-    "account": "user3",
+    "account": "admin",
     "password": "1234567"
 }
 
@@ -105,3 +105,13 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3002/api/dashboard/get
+
+
+###
+POST http://localhost:3002/api/conversation/create 
+Content-Type: application/json
+
+{
+    "members": ["6275e66882c0968d09bfcd25", "6275e66882c0968d09bfcd26"], 
+    "type": "private"
+}

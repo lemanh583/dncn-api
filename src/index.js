@@ -1,16 +1,13 @@
 require("dotenv").config();
-const mongoose = require("mongoose");
 const express = require("express");
 const router = require("./router");
 const cors = require("cors")
 const fileUpload = require("express-fileupload");
-const bcrypt = require("bcryptjs")
-const roles = require("./model/roles");
-const users = require("./model/users");
-// const path = require("path");
+const seeder = require("./config/seeder");
+const connectDB = require("./config/connectDB")
 const app = express();
+
 app.use(cors());
-// app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.json());
 app.use(fileUpload({
   useTempFiles : true,
@@ -19,88 +16,16 @@ app.use(fileUpload({
 
 app.use(router);
 
-const connectDB = async () => {
-  try {
-    const connect = await mongoose.connect(
-      `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@db-news.mn3s0.mongodb.net/${process.env.DATABASE_NAME}?retryWrites=true&w=majority`
-      // `mongodb://127.0.0.1:27017/dncn-news`
-    );
-    if (connect) console.log("DB connected");
-  } catch (error) {
-    console.error(error.message);
-  }
-};
+const server = require('http').createServer(app)
+const socketCtr =  require("./controller/socket")
+socketCtr.connectSocket(server)
+
+// connect DB
 connectDB();
 
 // insert document
-
-const seeder = async (req, res) => {
-  try {
-    const find = await roles.findOne({
-      name: "Administrator",
-      role: 0,
-      descriptions: "Quyền quản trị cao nhất",
-    });
-
-    if (!find) {
-      const data = [
-        {
-          name: "Administrator",
-          role: 0,
-          descriptions: "Quyền quản trị cao nhất",
-        },
-        {
-          name: "Moderator",
-          role: 1,
-          descriptions: "Quyền dưới admin, đăng bài, xoá user",
-        },
-        {
-          name: "Collaborators",
-          role: 2,
-          descriptions: "Cộng tác viên (đăng bài)",
-        },
-        {
-          name: "Member",
-          role: 3,
-          descriptions: "Cộng tác viên (đăng bài)",
-        },
-      ];
-      await Promise.all(
-        data.map(async (value) => {
-          await roles.create(value);
-        })
-      );
-    }
-
-    const findAdmin = await users.findOne({
-      username: "admin",
-      email: "admin@admin.com",
-      name: "admin",
-      role: 0,
-      note: "admin",
-    });
-    if (!findAdmin) {
-      await users.create({
-        username: "admin",
-        email: "admin@admin.com",
-        name: "admin",
-        password: bcrypt.hashSync("1234567", 10),
-        role: 0,
-        note: "admin",
-      });
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 seeder();
 
-// app.use('/static', express.static(path.join(__dirname,"./public/dist/static/")));
 
-// app.get("/", (req, res) => {
-//     res.sendFile('index.html', { root: path.join(__dirname, './public/dist/') });
-//     console.log(path.join(__dirname, './public/dist/'))
-// })
 const PORT = process.env.PORT;
-app.listen(PORT, console.log(`Server run on ${PORT}`));
+server.listen(PORT, console.log(`Server run on ${PORT}`));
